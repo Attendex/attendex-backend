@@ -6,7 +6,7 @@ var db = require('./../../connection');
 // requires query string to have loginid=(actual login ID)
 
 router.get('/', function(req, res, next) {
-  let sql = `SELECT bookName FROM attendancebook 
+  let sql = `SELECT bookName, bookID FROM attendancebook 
     WHERE loginID = '${req.query.loginid}'`;
   db.query(sql, (err, result) => {
     if (err) throw err;
