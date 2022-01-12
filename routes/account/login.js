@@ -8,7 +8,8 @@ var db = require("../../src/connection");
 // requires body to have userid and password
 
 router.post("/", async function (req, res, next) {
-  let sql = `SELECT password FROM authentication WHERE userID = '${req.body.userid}'`;
+  let sql = `SELECT password FROM authentication 
+    WHERE userID = '${req.body.userid}'`;
   let password;
 
   await db
