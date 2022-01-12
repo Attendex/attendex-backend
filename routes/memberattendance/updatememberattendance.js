@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var verifyJWT = require("./../../src/verifyJWT");
 
-var db = require('../../connection');
+var db = require('../../src/connection');
 
 // requires a body with attended, memberid, bookid and date properties
 
-router.put('/', async function(req, res, next) {
+router.put('/', verifyJWT, async function(req, res, next) {
 
   let sheetID;
 

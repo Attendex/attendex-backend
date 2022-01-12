@@ -7,9 +7,9 @@ const bodyParser = require('body-parser');
 
 // get all routes
 var indexRouter = require('./routes/index');
-var createAccountRouter = require('./routes/account/createaccount');
+var loginRouter = require('./routes/account/login');
+var signUpRouter = require('./routes/account/signup');
 var deleteAccountRouter = require('./routes/account/deleteaccount');
-var authenticatePasswordRouter = require('./routes/account/authenticatepassword');
 var addBookRouter = require('./routes/book/addbook');
 var deleteBookRouter = require('./routes/book/deletebook');
 var getBookRouter = require('./routes/book/getbook');
@@ -23,7 +23,7 @@ var getDateRouter = require('./routes/sheet/getdate');
 var updateMemberAttendanceRouter = require('./routes/memberattendance/updatememberattendance');
 
 
-var db = require('./connection');
+var db = require('./src/connection');
 
 var app = express();
 
@@ -44,9 +44,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', indexRouter);
-app.use('/createaccount', createAccountRouter);
+app.use('/login', loginRouter);
+app.use('/signup', signUpRouter);
 app.use('/deleteaccount', deleteAccountRouter);
-app.use('/authenticatepassword', authenticatePasswordRouter);
 app.use('/addbook', addBookRouter);
 app.use('/deletebook', deleteBookRouter);
 app.use('/getbook', getBookRouter);

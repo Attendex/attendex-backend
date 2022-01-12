@@ -1,17 +1,18 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var verifyJWT = require("./../../src/verifyJWT");
 
-var db = require('../../connection');
+var db = require("../../src/connection");
 
-// requires a body with loginid and bookname properties
+// requires a body with userid and bookname properties
 
-router.post('/', function(req, res, next) {
-  let sql = `INSERT INTO attendancebook (LoginID, bookName) 
-    VALUES ('${req.body.loginid}', '${req.body.bookname}')`;
+router.post("/", verifyJWT, function (req, res, next) {
+  let sql = `INSERT INTO attendancebook (userID, bookName) 
+    VALUES ('${req.body.userid}', '${req.body.bookname}')`;
   db.query(sql, (err, result) => {
     if (err) throw err;
-  })
-  res.send('Attendance book created');
+  });
+  res.send("Attendance book created");
 });
 
 module.exports = router;

@@ -1,18 +1,18 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var verifyJWT = require("./../../src/verifyJWT");
 
-var db = require('./../../connection');
+var db = require("../../src/connection");
 
-// requires query string to have loginid=(actual login ID)
+// requires query string to have userid=(actual login ID)
 
-router.get('/', function(req, res, next) {
+router.get("/", verifyJWT, function (req, res, next) {
   let sql = `SELECT bookName, bookID FROM attendancebook 
-    WHERE loginID = '${req.query.loginid}'`;
+    WHERE userID = '${req.query.userid}'`;
   db.query(sql, (err, result) => {
     if (err) throw err;
-    res.send(result);
-  })
-  
+    return res.send(result);
+  });
 });
 
 module.exports = router;

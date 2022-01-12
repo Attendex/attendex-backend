@@ -1,11 +1,12 @@
 var express = require("express");
 var router = express.Router();
+var verifyJWT = require("./../../src/verifyJWT");
 
-var db = require("../../connection");
+var db = require("../../src/connection");
 
 // requires query string to have sheetid
 
-router.get("/", async function (req, res, next) {
+router.get("/", verifyJWT, async function (req, res, next) {
 
   // if sheet already exist, get
   if (req.query.sheetid) {

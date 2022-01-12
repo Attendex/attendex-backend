@@ -1,11 +1,12 @@
 var express = require("express");
 var router = express.Router();
+var verifyJWT = require("./../../src/verifyJWT");
 
-var db = require("../../connection");
+var db = require("../../src/connection");
 
 // requires query string to have bookid and date
 
-router.post("/", async function (req, res, next) {
+router.post("/", verifyJWT, async function (req, res, next) {
   let sql = `SELECT sheetID FROM attendancesheet 
     WHERE bookID = ${req.body.bookid} AND ${req.body.date}`;
   let sheetID;
