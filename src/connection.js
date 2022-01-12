@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: process.env.DB_PASSWORD,
-  database: "attendance-management-system",
+  database: "attendex",
 });
 
 db.connect((err) => {
