@@ -8,24 +8,28 @@ var db = require("../../src/connection");
 // requires body to have userid and password
 
 router.post("/", async function (req, res, next) {
-  let sql = `SELECT password FROM authentication 
-    WHERE userID = '${req.body.userid}'`;
-  let password;
+  try {
+    let sql = `SELECT password FROM authentication 
+      WHERE userID = '${req.body.userid}'`;
+    let password;
 
-  await db
-    .promise()
-    .query(sql)
-    .then((result) => {
-      console.log(result);
-      passwordObject = result[0];
+    await db
+      .promise()
+      .query(sql)
+      .then((result) => {
+        console.log(result);
+        passwordObject = result[0];
 
-      // userid does not exist
-      if (passwordObject.length == 0) return res.sendStatus(403);
-      password = passwordObject[0].password;
-    })
-    .catch((err) => {
-      return res.status(400).send(err);
-    });
+        // userid does not exist
+        if (passwordObject.length == 0) return res.status(403).send('Userid does not exist');
+        password = passwordObject[0].password;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 
   const userid = req.body.userid;
 

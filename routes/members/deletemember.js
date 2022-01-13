@@ -7,12 +7,16 @@ var db = require('../../src/connection');
 // requires a body with memberid properties
 
 router.delete('/', verifyJWT, function(req, res, next) {
-  let sql = `DELETE FROM members WHERE memberID = ${req.body.memberid}`;
-  console.log(req.body.bookid)
-  db.query(sql, (err, result) => {
-    if (err) return res.status(400).send(err);
-  })
-  return res.send('Member deleted');
+  try {
+    let sql = `DELETE FROM members WHERE memberID = ${req.body.memberid}`;
+    console.log(req.body.bookid)
+    db.query(sql, err => {
+      if (err) throw err;
+    })
+    return res.send('Member deleted');
+  } catch (err) {
+    return res.status(400).send(err)
+  }
 });
 
 module.exports = router;

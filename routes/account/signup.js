@@ -7,11 +7,15 @@ var db = require("../../src/connection");
 // requires a body with userid and password properties
 
 router.post("/", function (req, res, next) {
-  let sql = `INSERT INTO authentication (userID, password) 
-    VALUES ('${req.body.userid}', '${req.body.password}')`;
-  db.query(sql, (err, result) => {
-    if (err) return res.status(400).send(err);
-  });
+  try {
+    let sql = `INSERT INTO authentication (userID, password) 
+      VALUES ('${req.body.userid}', '${req.body.password}')`;
+    db.query(sql, (err, result) => {
+      if (err) throw err;
+    });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 
   const userid = req.body.userid;
 

@@ -5,12 +5,16 @@ var verifyJWT = require("./../../src/verifyJWT");
 var db = require("../../src/connection");
 
 router.get("/", verifyJWT, function (req, res, next) {
-  let sql = `SELECT bookName, bookID FROM attendancebook 
-    WHERE userID = '${req.userid}'`;
-  db.query(sql, (err, result) => {
-    if (err) return res.status(400).send(err);
-    return res.send(result);
-  });
+  try {
+    let sql = `SELECT bookName, bookID FROM attendancebook 
+      WHERE userID = '${req.userid}'`;
+    db.query(sql, (err, result) => {
+      if (err) throw err;
+      return res.send(result);
+    });
+  } catch(err) {
+    return res.status(400).send(err);
+  }
 });
 
 module.exports = router;

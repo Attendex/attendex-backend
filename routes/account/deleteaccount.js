@@ -5,12 +5,16 @@ var verifyJWT = require("./../../src/verifyJWT");
 var db = require("../../src/connection");
 
 router.delete("/", verifyJWT, function (req, res, next) {
-  let sql = `DELETE FROM authentication 
-    WHERE userID = '${req.userid}'`;
-  db.query(sql, (err, result) => {
-    if (err) return res.status(400).send(err);
-  });
-  res.send("Account deleted");
+  try {
+    let sql = `DELETE FROM authentication 
+      WHERE userID = '${req.userid}'`;
+    db.query(sql, (err, result) => {
+      if (err) throw err;
+    });
+    res.send("Account deleted");
+  } catch(err) {
+    return res.status(400).send(err)
+  }
 });
 
 module.exports = router;

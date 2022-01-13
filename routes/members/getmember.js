@@ -7,12 +7,16 @@ var db = require('../../src/connection');
 // requires query string to have bookid
 
 router.get('/', verifyJWT, function(req, res, next) {
-  let sql = `SELECT memberName, memberID FROM members 
-    WHERE bookID = ${req.query.bookid}`;
-  db.query(sql, (err, result) => {
-    if (err) return res.status(400).send(err);
-    res.send(result);
-  })
+  try {
+    let sql = `SELECT memberName, memberID FROM members 
+      WHERE bookID = ${req.query.bookid}`;
+    db.query(sql, (err, result) => {
+      if (err) 
+      res.send(result);
+    })
+  } catch (err) {
+    return res.status(400).send(err);
+  }
   
 });
 
