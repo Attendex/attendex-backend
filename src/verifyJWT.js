@@ -8,9 +8,10 @@ function verifyJWT(req, res, next) {
   if (token == null) return res.status(401).send("No token sent");
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    // unauthorised if token is not verified / expired   
+    // unauthorised if token is not verified / expired
     if (err) return res.status(401).send("Token expired or unverified");  
-    req.user = user;
+    req.userid = user.userid;
+    console.log(user)
     next();
   })
 }

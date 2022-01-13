@@ -1,3 +1,4 @@
+const res = require('express/lib/response');
 const mysql = require('mysql2');
 const createTableScript = require('./createtablescript');
 require('dotenv').config();
@@ -7,8 +8,12 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: process.env.DB_PASSWORD,
-  database: "attendex",
+  multipleStatements: true
 });
+
+db.query(createTableScript, (err) => {
+  if (err) console.log(err);
+})
 
 db.connect((err) => {
   if (err) {

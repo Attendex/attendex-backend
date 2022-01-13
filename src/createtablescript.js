@@ -1,21 +1,30 @@
 const createTable = `
 
+-- MySQL Workbench Forward Engineering
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Create schema if doesnt exist
+-- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS attendex DEFAULT CHARACTER SET utf8 ;
-USE attendex ;
+-- -----------------------------------------------------
+-- Schema Attendex
+-- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table attendex.authentication
+-- Schema Attendex
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS attendex.authentication (
-  userID VARCHAR(15) NOT NULL,
-  password VARCHAR(15) NOT NULL,
+CREATE SCHEMA IF NOT EXISTS Attendex DEFAULT CHARACTER SET utf8 ;
+USE Attendex ;
+
+-- -----------------------------------------------------
+-- Table Attendex.authentication
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS Attendex.authentication (
+  userID VARCHAR(25) NOT NULL,
+  password VARCHAR(25) NOT NULL,
   PRIMARY KEY (userID),
   UNIQUE INDEX loginID_UNIQUE (userID ASC) VISIBLE)
 ENGINE = InnoDB
@@ -23,10 +32,10 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table attendex.attendancebook
+-- Table Attendex.attendancebook
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS attendex.attendancebook (
-  userID VARCHAR(15) NOT NULL,
+CREATE TABLE IF NOT EXISTS Attendex.attendancebook (
+  userID VARCHAR(25) NOT NULL,
   bookName VARCHAR(45) NOT NULL,
   bookID INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (bookID),
@@ -34,18 +43,18 @@ CREATE TABLE IF NOT EXISTS attendex.attendancebook (
   INDEX userID_idx (userID ASC) VISIBLE,
   CONSTRAINT userID
     FOREIGN KEY (userID)
-    REFERENCES attendex.authentication (userID)
+    REFERENCES Attendex.authentication (userID)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table attendex.attendancesheet
+-- Table Attendex.attendancesheet
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS attendex.attendancesheet (
+CREATE TABLE IF NOT EXISTS Attendex.attendancesheet (
   sheetID INT NOT NULL AUTO_INCREMENT,
   bookID INT NOT NULL,
   date VARCHAR(15) NOT NULL,
@@ -54,18 +63,18 @@ CREATE TABLE IF NOT EXISTS attendex.attendancesheet (
   INDEX bookID_idx (bookID ASC) VISIBLE,
   CONSTRAINT bookID
     FOREIGN KEY (bookID)
-    REFERENCES attendex.attendancebook (bookID)
+    REFERENCES Attendex.attendancebook (bookID)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table attendex.members
+-- Table Attendex.members
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS attendex.members (
+CREATE TABLE IF NOT EXISTS Attendex.members (
   bookID INT NOT NULL,
   memberName VARCHAR(45) NOT NULL,
   memberID INT NOT NULL AUTO_INCREMENT,
@@ -74,18 +83,18 @@ CREATE TABLE IF NOT EXISTS attendex.members (
   INDEX sheetID (bookID ASC) VISIBLE,
   CONSTRAINT sheetID
     FOREIGN KEY (bookID)
-    REFERENCES attendex.attendancebook (bookID)
+    REFERENCES Attendex.attendancebook (bookID)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table attendex.memberattendance
+-- Table Attendex.memberattendance
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS attendex.memberattendance (
+CREATE TABLE IF NOT EXISTS Attendex.memberattendance (
   memberID INT NOT NULL,
   fk_sheetID INT NOT NULL,
   attended TINYINT NOT NULL,
@@ -93,12 +102,12 @@ CREATE TABLE IF NOT EXISTS attendex.memberattendance (
   INDEX sheetID_idx (fk_sheetID ASC) VISIBLE,
   CONSTRAINT fk_sheetID
     FOREIGN KEY (fk_sheetID)
-    REFERENCES attendex.attendancesheet (sheetID)
+    REFERENCES Attendex.attendancesheet (sheetID)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT memberID
     FOREIGN KEY (memberID)
-    REFERENCES attendex.members (memberID)
+    REFERENCES Attendex.members (memberID)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -108,5 +117,6 @@ DEFAULT CHARACTER SET = utf8mb3;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;`
+
 
 module.exports = createTable;

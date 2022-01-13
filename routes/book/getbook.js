@@ -4,11 +4,9 @@ var verifyJWT = require("./../../src/verifyJWT");
 
 var db = require("../../src/connection");
 
-// requires query string to have userid=(actual login ID)
-
 router.get("/", verifyJWT, function (req, res, next) {
   let sql = `SELECT bookName, bookID FROM attendancebook 
-    WHERE userID = '${req.query.userid}'`;
+    WHERE userID = '${req.userid}'`;
   db.query(sql, (err, result) => {
     if (err) return res.status(400).send(err);
     return res.send(result);

@@ -4,11 +4,9 @@ var verifyJWT = require("./../../src/verifyJWT");
 
 var db = require("../../src/connection");
 
-// requires a body with userid properties
-
 router.delete("/", verifyJWT, function (req, res, next) {
   let sql = `DELETE FROM authentication 
-    WHERE userID = '${req.body.userid}'`;
+    WHERE userID = '${req.userid}'`;
   db.query(sql, (err, result) => {
     if (err) return res.status(400).send(err);
   });
