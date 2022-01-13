@@ -28,10 +28,9 @@ router.post("/", verifyJWT, async function (req, res, next) {
   
   // else if sheet does not exist, create sheet with all members inside
   } else {
-
     // create sheet in attendancesheet table
     let sql = `INSERT INTO attendancesheet (bookID, date) 
-      VALUES (${req.body.bookid}, ${req.body.date})`;
+      VALUES (${req.body.bookid}, '${req.body.date}')`;
     db.query(sql, (err, result) => {
       if (err) return res.status(400).send(err);
     });
@@ -58,11 +57,15 @@ router.post("/", verifyJWT, async function (req, res, next) {
         memberInsertedSql += ", ";
       }
     }
-    sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) `;
-    if (memberInsertedSql) sql += `VALUES ${memberInsertedSql}`;
-    db.query(sql, (err, result) => {
-      if (err) return res.status(400).send(err);
-    });
+    
+    // if there are members in the book
+    if (memberInsertedSql != "") {
+      sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) `;
+      if (memberInsertedSql) sql += `VALUES ${memberInsertedSql}`;
+      db.query(sql, (err, result) => {
+        if (err) return res.status(400).send(err);
+      });
+    } 
 
     // get memberattendance
     sql = `SELECT members.memberName, members.memberID, memberattendance.attended 
@@ -71,8 +74,8 @@ router.post("/", verifyJWT, async function (req, res, next) {
       WHERE fk_sheetID = ${sheetID}`;
     db.query(sql, (err, result) => {
       if (err) return res.status(400).send(err);
-      return res.send(result);
-      // send back sheet id
+      let response = { "sheetID": sheetID, "memberAttendance": result };
+      return res.send(response);
     })
   }
   
