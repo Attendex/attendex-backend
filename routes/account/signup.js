@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var jwt = require("jsonwebtoken");
 
 var db = require("../../src/connection");
 
@@ -17,7 +18,7 @@ router.post("/", function (req, res, next) {
   const user = { userid: userid };
 
   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' }); 
-  res.json({accessToken: accessToken});
+  return res.json({accessToken: accessToken});
 });
 
 module.exports = router;
