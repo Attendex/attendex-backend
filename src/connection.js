@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const createTableScript = require('./createtablescript');
 require('dotenv').config();
 
 // create connection

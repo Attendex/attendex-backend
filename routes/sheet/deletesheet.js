@@ -10,9 +10,9 @@ router.delete('/', verifyJWT, function(req, res, next) {
   let sql = `DELETE FROM attendancesheet 
     WHERE sheetID = ${req.body.sheetid}`;
   db.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) return res.status(400).send(err);
   })
-  res.send('Sheet deleted');
+  return res.send('Sheet deleted');
 });
 
 module.exports = router;

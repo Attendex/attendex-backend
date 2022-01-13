@@ -15,9 +15,9 @@ router.get("/", verifyJWT, async function (req, res, next) {
       ON members.memberID = memberattendance.memberID 
       WHERE fk_sheetID = ${req.query.sheetid}`;
     db.query(sql, (err, result) => {
-      if (err) throw err; 
+      if (err) return res.status(400).send(err); 
       if (result.length === 0) res.status(404).send('Sheet Not Found'); // 404 not found
-      res.send(result);
+      return res.send(result);
     });
   } 
   

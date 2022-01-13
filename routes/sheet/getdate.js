@@ -10,8 +10,8 @@ router.get('/', verifyJWT, function(req, res, next) {
   let sql = `SELECT date, sheetID FROM attendancesheet
     WHERE bookID = ${req.query.bookid}`;
   db.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(result);
+    if (err) return res.status(400).send(err);
+    return res.send(result);
   })
   
 });

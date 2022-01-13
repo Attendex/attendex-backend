@@ -11,7 +11,7 @@ router.delete('/', verifyJWT, function(req, res, next) {
     WHERE bookID = ${req.body.bookid}`;
   console.log(req.body.bookid)
   db.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) return res.status(400).send(err);
   })
   res.send('Book deleted');
 });

@@ -10,9 +10,9 @@ router.post('/', verifyJWT, function(req, res, next) {
   let sql = `INSERT INTO members (bookID, memberName) 
     VALUES (${req.body.bookid}, '${req.body.name}')`;
   db.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) return res.status(400).send(err);
   })
-  res.send('Member added');
+  return res.send('Member added');
 });
 
 module.exports = router;

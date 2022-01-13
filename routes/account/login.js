@@ -24,7 +24,7 @@ router.post("/", async function (req, res, next) {
       password = passwordObject[0].password;
     })
     .catch((err) => {
-      throw err;
+      return res.status(400).send(err);
     });
 
   const userid = req.body.userid;

@@ -18,7 +18,9 @@ router.post("/", verifyJWT, async function (req, res, next) {
         sheetID = result[0][0].sheetID;
       }
     }))
-    .catch(err => {throw err})
+    .catch(err => {
+      return res.status(400).send(err);
+    })
 
   // if sheet already exist, throw error
   if (sheetID) {
@@ -31,7 +33,7 @@ router.post("/", verifyJWT, async function (req, res, next) {
     let sql = `INSERT INTO attendancesheet (bookID, date) 
       VALUES (${req.body.bookid}, ${req.body.date})`;
     db.query(sql, (err, result) => {
-      if (err) throw err;
+      if (err) return res.status(400).send(err);
     });
 
     // get new sheetid
@@ -39,14 +41,14 @@ router.post("/", verifyJWT, async function (req, res, next) {
       WHERE bookID = ${req.body.bookid} AND ${req.body.date}`;
     await db.promise().query(sql)
       .then((result => {sheetID = result[0][0].sheetID}))
-      .catch(err => {throw err})
+      .catch(err => {return res.status(400).send(err)})
 
     // get list of members from members table
     let listOfMembers;
     sql = `SELECT memberID from members WHERE bookID = ${req.body.bookid}`;
     await db.promise().query(sql)
       .then(result => listOfMembers = result[0])
-      .catch(err => {throw err});
+      .catch(err => {return res.status(400).send(err)});
 
     // insert all members from this book into memberattendance
     let memberInsertedSql = "";
@@ -59,7 +61,7 @@ router.post("/", verifyJWT, async function (req, res, next) {
     sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) 
       VALUES ${memberInsertedSql}`;
     db.query(sql, (err, result) => {
-      if (err) throw err;
+      if (err) return res.status(400).send(err);
     });
 
     // get memberattendance
@@ -68,8 +70,8 @@ router.post("/", verifyJWT, async function (req, res, next) {
       ON members.memberID = memberattendance.memberID 
       WHERE fk_sheetID = ${sheetID}`;
     db.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
+      if (err) return res.status(400).send(err);
+      return res.send(result);
     })
   }
   

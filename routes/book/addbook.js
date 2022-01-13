@@ -10,7 +10,7 @@ router.post("/", verifyJWT, function (req, res, next) {
   let sql = `INSERT INTO attendancebook (userID, bookName) 
     VALUES ('${req.body.userid}', '${req.body.bookname}')`;
   db.query(sql, (err, result) => {
-    if (err) throw err;
+    if (err) return res.status(400).send(err);
   });
   res.send("Attendance book created");
 });
