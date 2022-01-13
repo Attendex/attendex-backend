@@ -13,16 +13,17 @@ router.post("/", function (req, res, next) {
     db.query(sql, (err, result) => {
       if (err) throw err;
     });
+  
+    const userid = req.body.userid;
+
+    const user = { userid: userid };
+
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' }); 
+    return res.json({accessToken: accessToken});
+
   } catch (err) {
     return res.status(400).send(err);
   }
-
-  const userid = req.body.userid;
-
-  const user = { userid: userid };
-
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' }); 
-  return res.json({accessToken: accessToken});
 });
 
 module.exports = router;

@@ -26,7 +26,7 @@ router.post("/", verifyJWT, async function (req, res, next) {
 
     // if sheet already exist, throw error
     if (sheetID) {
-      return res.status(409).send('Sheet Already Exists'); // 400 bad request
+      return res.status(409).send('Sheet Already Exists'); // 409 conflict
     
     // else if sheet does not exist, create sheet with all members inside
     } else {

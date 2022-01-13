@@ -9,7 +9,6 @@ var db = require('../../src/connection');
 router.delete('/', verifyJWT, function(req, res, next) {
   try {
     let sql = `DELETE FROM members WHERE memberID = ${req.body.memberid}`;
-    console.log(req.body.bookid)
     db.query(sql, err => {
       if (err) throw err;
     })

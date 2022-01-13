@@ -9,9 +9,18 @@ var db = require('../../src/connection');
 router.post('/', verifyJWT, async function(req, res, next) {
 
   try {
+
+    let memberName = "";
+    let sql = `SELECT memberName FROM members 
+      WHERE bookID = ${req.body.bookid} AND memberName = '${req.body.name}'`;
+    db.promise().query(sql).then(result => {
+      memberName = result[0].memberName;
+    }).catch(err => { throw err });
+    if (!memberName) res.status(409).send("Duplicate Member Name");
+
     // insert member and get new memberid
     let newMemberID;
-    let sql = `INSERT INTO members (bookID, memberName) 
+    sql = `INSERT INTO members (bookID, memberName) 
       VALUES (${req.body.bookid}, '${req.body.name}')`;
     await db.promise().query(sql)
       .then(result => {
@@ -42,7 +51,6 @@ router.post('/', verifyJWT, async function(req, res, next) {
     if (memberAttendanceInserted) {
       sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) `;
       sql += `VALUES ${memberAttendanceInserted}`;
-      console.log(sql)
       await db.promise().query(sql).catch(err => { throw err });
     }
 
