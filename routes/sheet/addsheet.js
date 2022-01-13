@@ -28,10 +28,9 @@ router.post("/", verifyJWT, async function (req, res, next) {
   
   // else if sheet does not exist, create sheet with all members inside
   } else {
-
     // create sheet in attendancesheet table
     let sql = `INSERT INTO attendancesheet (bookID, date) 
-      VALUES (${req.body.bookid}, ${req.body.date})`;
+      VALUES (${req.body.bookid}, '${req.body.date}')`;
     db.query(sql, (err, result) => {
       if (err) return res.status(400).send(err);
     });
