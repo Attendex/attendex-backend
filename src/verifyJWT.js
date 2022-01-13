@@ -11,7 +11,6 @@ function verifyJWT(req, res, next) {
     // unauthorised if token is not verified / expired
     if (err) return res.status(401).send("Token expired or unverified");  
     req.userid = user.userid;
-    console.log(user)
     next();
   })
 }

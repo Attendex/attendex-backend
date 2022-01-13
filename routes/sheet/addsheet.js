@@ -58,8 +58,8 @@ router.post("/", verifyJWT, async function (req, res, next) {
         memberInsertedSql += ", ";
       }
     }
-    sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) 
-      VALUES ${memberInsertedSql}`;
+    sql = `INSERT INTO memberattendance (memberID, fk_sheetID, attended) `;
+    if (memberInsertedSql) sql += `VALUES ${memberInsertedSql}`;
     db.query(sql, (err, result) => {
       if (err) return res.status(400).send(err);
     });

@@ -8,7 +8,8 @@ var db = require("../../src/connection");
 
 router.get("/", verifyJWT, async function (req, res, next) {
 
-  // if sheet already exist, get
+  // check if table contains sheetID, if does not contain, sheet not found error
+
   if (req.query.sheetid) {
     let sql = `SELECT members.memberName, members.memberID, memberattendance.attended 
       FROM members INNER JOIN memberattendance
@@ -16,7 +17,6 @@ router.get("/", verifyJWT, async function (req, res, next) {
       WHERE fk_sheetID = ${req.query.sheetid}`;
     db.query(sql, (err, result) => {
       if (err) return res.status(400).send(err); 
-      if (result.length === 0) res.status(404).send('Sheet Not Found'); // 404 not found
       return res.send(result);
     });
   } 
