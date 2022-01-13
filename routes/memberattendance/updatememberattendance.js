@@ -6,7 +6,7 @@ var db = require('../../src/connection');
 
 // requires a body with attended, memberid, sheetid properties
 
-router.put('/', verifyJWT, async function(req, res, next) {
+router.put('/', verifyJWT, function(req, res, next) {
 
   try {
     sql = `UPDATE memberattendance SET attended = ${req.body.attended} 

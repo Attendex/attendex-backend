@@ -7,7 +7,8 @@ var db = require("../../src/connection");
 router.get("/", verifyJWT, function (req, res, next) {
   try {
     let sql = `SELECT bookName, bookID FROM attendancebook 
-      WHERE userID = '${req.userid}'`;
+      WHERE userID = '${req.userid}'
+      ORDER BY bookName`;
     db.query(sql, (err, result) => {
       if (err) throw err;
       return res.send(result);

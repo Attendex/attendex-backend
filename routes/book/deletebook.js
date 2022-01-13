@@ -10,7 +10,6 @@ router.delete('/', verifyJWT, function(req, res, next) {
   try {
     let sql = `DELETE FROM attendancebook 
       WHERE bookID = ${req.body.bookid}`;
-    console.log(req.body.bookid)
     db.query(sql, (err, result) => {
       if (err) throw err;
     })
