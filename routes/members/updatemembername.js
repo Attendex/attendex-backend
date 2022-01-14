@@ -17,12 +17,12 @@ router.put("/", verifyJWT, async function (req, res, next) {
       .promise()
       .query(sql)
       .then((result) => {
-        memberName = result[0].memberName;
+        memberName = result[0][0].memberName;
       })
       .catch((err) => {
         throw err;
       });
-    if (!memberName) return res.status(409).send("Member Name already exists");
+    if (memberName) return res.status(409).send("Member Name already exists");
 
     // update member name
     sql = `UPDATE members SET memberName = '${req.body.name}'
