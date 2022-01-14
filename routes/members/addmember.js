@@ -10,13 +10,14 @@ router.post('/', verifyJWT, async function(req, res, next) {
 
   try {
 
+    // check duplicate name
     let memberName = "";
     let sql = `SELECT memberName FROM members 
       WHERE bookID = ${req.body.bookid} AND memberName = '${req.body.name}'`;
-    db.promise().query(sql).then(result => {
+    await db.promise().query(sql).then(result => {
       memberName = result[0].memberName;
     }).catch(err => { throw err });
-    if (!memberName) res.status(409).send("Duplicate Member Name");
+    if (!memberName) return res.status(409).send("Member Name already exists");
 
     // insert member and get new memberid
     let newMemberID;
