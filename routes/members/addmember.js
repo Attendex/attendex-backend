@@ -15,9 +15,9 @@ router.post('/', verifyJWT, async function(req, res, next) {
     let sql = `SELECT memberName FROM members 
       WHERE bookID = ${req.body.bookid} AND memberName = '${req.body.name}'`;
     await db.promise().query(sql).then(result => {
-      memberName = result[0][0].memberName;
+      memberName = result[0];
     }).catch(err => { throw err });
-    if (memberName) return res.status(409).send("Member Name already exists");
+    if (memberName.length == 1) return res.status(409).send("Member Name already exists");
 
     // insert member and get new memberid
     let newMemberID;

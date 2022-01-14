@@ -14,13 +14,16 @@ router.post("/", verifyJWT, async function (req, res, next) {
     let sql = `SELECT bookName FROM attendancebook 
       WHERE userID = '${req.userid}' AND bookName = '${req.body.bookname}'`;
     await db.promise().query(sql).then(result => {
-      bookName = result[0][0].bookName;
+      bookName = result[0];
+      console.log(bookName)
     }).catch(err => { throw err });
-    if (bookName) return res.status(409).send("Book Name already exists");
+    if (bookName.length == 1) return res.status(409).send("Book Name already exists");
 
     // insert into book
     sql = `INSERT INTO attendancebook (userID, bookName) 
       VALUES ('${req.userid}', '${req.body.bookname}')`;
+      console.log(req.userid);
+      console.log(req.body.bookname);
     db.query(sql, (err, result) => {
       if (err) throw err;
     });

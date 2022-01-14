@@ -14,9 +14,9 @@ router.put('/', verifyJWT, async function(req, res, next) {
     let sql = `SELECT bookName FROM attendancebook 
       WHERE bookID = '${req.body.bookid}'`;
     await db.promise().query(sql).then(result => {
-      bookName = result[0][0].bookName;
+      bookName = result[0];
     }).catch(err => { throw err });
-    if (bookName) return res.status(409).send("Book Name already exists");
+    if (bookName.length == 1) return res.status(409).send("Book Name already exists");
 
     // update book name
     sql = `UPDATE attendancebook SET bookName = '${req.body.bookname}'
