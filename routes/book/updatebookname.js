@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var verifyJWT = require("./../../src/verifyJWT");
+var verifyJWT = require("../../src/verifyJWT");
 
 var db = require('../../src/connection');
 
