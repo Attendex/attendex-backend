@@ -11,12 +11,17 @@ var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/account/login');
 var signUpRouter = require('./routes/account/signup');
 var deleteAccountRouter = require('./routes/account/deleteaccount');
+
 var addBookRouter = require('./routes/book/addbook');
 var deleteBookRouter = require('./routes/book/deletebook');
 var getBookRouter = require('./routes/book/getbook');
+var updateBookRouter = require('./routes/book/updatebookname');
+
 var addMemberRouter = require('./routes/members/addmember');
 var deleteMemberRouter = require('./routes/members/deletemember');
 var getMemberRouter = require('./routes/members/getmember');
+var updateMemberNameRouter = require('./routes/members/updatemembername');
+
 var deleteSheetRouter = require('./routes/sheet/deletesheet');
 var addSheetRouter = require('./routes/sheet/addsheet');
 var getSheetRouter = require('./routes/sheet/getsheet');
@@ -47,19 +52,26 @@ app.use(cors());
 app.options('*', cors());
 
 app.use('/', indexRouter);
+
 app.use('/login', loginRouter);
 app.use('/signup', signUpRouter);
 app.use('/deleteaccount', deleteAccountRouter);
+
 app.use('/addbook', addBookRouter);
 app.use('/deletebook', deleteBookRouter);
 app.use('/getbook', getBookRouter);
+app.use('/updatebookname', updateBookRouter);
+
 app.use('/addmember', addMemberRouter);
 app.use('/deletemember', deleteMemberRouter);
 app.use('/getmember', getMemberRouter);
+app.use('/updatemembername', updateMemberNameRouter);
+
 app.use('/addsheet', addSheetRouter);
 app.use('/deletesheet', deleteSheetRouter);
 app.use('/getsheet', getSheetRouter);
 app.use('/getdate', getDateRouter);
+
 app.use('/updatememberattendance', updateMemberAttendanceRouter);
 
 // catch 404 and forward to error handler
