@@ -13,21 +13,22 @@ router.post("/", async function (req, res, next) {
       WHERE userID = '${req.body.userid}'`;
     let password;
 
-    await db
+    const passwordObject = await db
       .promise()
       .query(sql)
       .then((result) => {
-        passwordObject = result[0];
-
-        // userid does not exist
-        if (passwordObject.length == 0) return res.status(403).send('Userid does not exist');
+        const passwordObject = result[0];
         password = passwordObject[0].password;
+        return passwordObject;
       })
       .catch((err) => {
         throw err;
       });
-  
+      
     const userid = req.body.userid;
+
+    // userid does not exist
+    if (passwordObject.length == 0) return res.status(403).send('Userid does not exist');
 
     // forbidden (wrong username or password)
     if (password !== req.body.password) return res.status(403).send("Wrong username or password");
